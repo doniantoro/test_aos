@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'globals.dart' as globals;
 
-class InputCustomer extends StatefulWidget {
-  
-  const InputCustomer({Key? key}) : super(key: key);
+class CustomerDetail extends StatelessWidget {
+  String name = "";
+  String phone = "";
+  String address = "";
+   CustomerDetail({ Key? key, required this.name,required this.phone,required this.address}) : super(key: key);
 
-  @override
-  _InputCustomerState createState() => _InputCustomerState();
-}
 
-class _InputCustomerState extends State<InputCustomer> {
+
+    
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return Scaffold(
       appBar: AppBar(
-        title: Text("Input Customer"),
+        title: Text("Detail Customer"),
       ),
       body: Container(
           child: ListView(
@@ -28,6 +26,8 @@ class _InputCustomerState extends State<InputCustomer> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextFormField(
+              enabled: false,
+              initialValue: name,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter Your Name',
@@ -43,13 +43,11 @@ class _InputCustomerState extends State<InputCustomer> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextFormField(
+              enabled: false,
+              initialValue: phone,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter Your Phone Number',
-                // icon: Icon(Icons.clear),
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
           ),
           Container(
@@ -60,29 +58,16 @@ class _InputCustomerState extends State<InputCustomer> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextFormField(
+              enabled: false,
+              initialValue: address,
               maxLines: 5,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left:20,right:20,top:20),
-             
-                      child: SizedBox(
-             
-              child: ElevatedButton(
-                
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff3498DB))),
-                  onPressed: null,
-                  child: Text("Save", style: TextStyle(color: Colors.white))),
-            ),
-          )
         ],
       )),
     );
   }
 }
-

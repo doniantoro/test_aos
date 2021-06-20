@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:test_aos/test.dart';
 import 'dart:async'; 
 import 'dart:convert';
+import 'CustomerDetail.dart';
 
-import 'dart:convert' as convert;
+import 'InputCustomer.dart';
+
+// import 'dart:convert' as convert;
+
+// import 'package:http/http.dart';
 
 class ListCustomer extends StatefulWidget {
   const ListCustomer({Key? key}) : super(key: key);
@@ -14,60 +20,27 @@ class ListCustomer extends StatefulWidget {
 }
 
 class _ListCustomerState extends State<ListCustomer> {
-  List<String> Test = [
-    "apa",
-    "kepo",
-    "kepo",
-  ];
 
-  var url = 'http://127.0.0.1:8000';
-   late List data ;
+  List<dynamic> data=[];
   
-//     Future<String> getData() async {
+    Future<String> getData() async {
 
-//     // var res = await http.get(Uri.encodeComponent(url),
-//     //         headers:{'accept':'application/json'});
+  final url = Uri.parse('https://aos.doniantoro.tech/api/list_customer');
+  
+ var response = await http.get(url, headers: {'Accept': 'application/json'});
 
-//             var url = Uri.parse('http://127.0.0.1:8000/api/list_customer');
-// var response = await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
 
+    setState(() {
+
+  
+    var content = json.decode(response.body);
+    data=content;
     
-//     // var res = await http.get(Uri.encodeFull('url'), headers: { 'accept':'application/json' });
+    });
 
-//     setState(() {
-//       // var response = json.decode(res.body);
-//       // data = response['result'];
+    return 'succes';
 
-//       print('kepo');
-
-//     });
-
-//     // print(await http.read("http://127.0.0.1:8000/api/list_customer"));
-//     return 'succes';
-
-//   }
-
-
-
-  Future<String> getData() async {
-  // This example uses the Google Books API to search for books about http.
-  // https://developers.google.com/books/docs/overview
-  var url =
-      Uri.http('localhost:8000', '/api/list_customer');
-
-  // Await the http get response, then decode the json-formatted response.
-  var response = await http.get(url);
-  if (response.statusCode == 200) {
-    var jsonResponse =
-        convert.jsonDecode(response.body) as Map<String, dynamic>;
-    var itemCount = jsonResponse['totalItems'];
-    print('Number of books about http: $itemCount.');
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
   }
-  return 'succes';
-}
-
 
 
 
@@ -76,28 +49,35 @@ class _ListCustomerState extends State<ListCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List CUstomer"),
+        title: Text("List Customer"),
       ),
       body: ListView.builder(
-        itemCount: Test.length,
+        itemCount:data.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
               child: Column(children: [
             ListTile(
-              leading: Text('${Test[index]}'),
+              leading: Text('${data[index]['name']}'),
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder:(context)=>CustomerDetail(name:'${data[index]['name']}',phone:'${data[index]['phone']}',address:'${data[index]['address']}')));
+              },
             )
           ]));
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getData,
-        // (){
-        //   print('kepo');
-          
-        // },
+        onPressed:(){ Navigator.push(
+          context,MaterialPageRoute(builder: (context)=>InputCustomer())
+          );
+        },
         
         child: Icon(Icons.add),
       ),
     );
   }
+  @override
+void initState() {
+    super.initState();
+    this.getData(); //PANGGIL FUNGSI YANG TELAH DIBUAT SEBELUMNYA
+}
 }
